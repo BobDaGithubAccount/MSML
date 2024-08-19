@@ -5,6 +5,7 @@ import java.io.InputStreamReader
 
 plugins {
     id("java")
+    id("maven-publish")
 }
 
 group = "org.jephacake.msml"
@@ -19,6 +20,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    implementation("org.yaml:snakeyaml:2.0")
 }
 
 tasks.test {
@@ -93,4 +95,17 @@ tasks.register("runPaperServer", Exec::class) {
     dependsOn("downloadPaper", "movePlugin")
     workingDir = layout.buildDirectory.dir("paper-server").get().asFile
     commandLine("java", "-jar", paperJar.absolutePath, "--nogui")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            url = uri("${rootProject.buildDir}/repo")
+        }
+    }
 }

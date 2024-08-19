@@ -3,6 +3,9 @@ package org.jephacake.msml;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jephacake.msml.api.utils.Logger;
+import org.jephacake.msml.core.loader.ModLoader;
+
+import java.io.File;
 
 public class Main extends JavaPlugin implements Listener {
 
@@ -11,6 +14,7 @@ public class Main extends JavaPlugin implements Listener {
         Logger.logger = getLogger();
         Logger.info("MSML has been enabled!");
         registerEvents();
+        initModLoadingLifecycle();
     }
     @Override
     public void onDisable() {
@@ -19,5 +23,11 @@ public class Main extends JavaPlugin implements Listener {
 
     public void registerEvents() {
         getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    public void initModLoadingLifecycle() {
+        File pluginsFolder = getDataFolder().getParentFile();
+        Logger.info("Loading mods from " + pluginsFolder.getAbsolutePath());
+        ModLoader.locateMods(pluginsFolder);
     }
 }
