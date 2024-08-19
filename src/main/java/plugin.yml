@@ -1,0 +1,7 @@
+name: MSML
+version: 1.0.0
+main: org.jephacake.msml.Main
+description: A simple mod loader that allows servers to load mods that vanilla clients can access through the magic of resource packs.
+author: Jephacake
+website: https://www.github.com/BobDaGithubAccount/MSML
+api-version: '1.21.1'
