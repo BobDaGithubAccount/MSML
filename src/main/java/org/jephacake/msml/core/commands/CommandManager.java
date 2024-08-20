@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jephacake.msml.core.loader.Mod;
 import org.jephacake.msml.core.loader.ModLoader;
 
@@ -40,17 +41,24 @@ public class CommandManager implements CommandExecutor {
         return false;
     }
 
-    public void registerCommand(String commandName, CommandHandler handler) {
+    public void registerCommand(JavaPlugin plugin, String commandName, CommandHandler handler) {
         commands.put(commandName, handler);
+        plugin.getCommand(commandName).setExecutor(this);
     }
 
-    public CommandManager() {
-        registerCommand("listmods", (player, command, label, args) -> {
-            player.sendMessage(ChatColor.GREEN + "Listing mods...");
+    public void initCommandRegistry(JavaPlugin plugin) {
+        registerCommand(plugin, "listmods", (player, command, label, args) -> {
+            player.sendMessage(ChatColor.GOLD + "Loaded Mods:");
             for(Entry<String, Mod> mod : ModLoader.mods.entrySet()) {
-                player.sendMessage(ChatColor.GOLD + mod.getKey() + " v" + mod.getValue().config.version);
+                player.sendMessage(ChatColor.GOLD + "----------------");
+                player.sendMessage(ChatColor.GREEN + "Name: " + mod.getValue().config.name);
+                player.sendMessage(ChatColor.GREEN + "Version: " + mod.getValue().config.version);
+                player.sendMessage(ChatColor.GREEN + "Authors: " + mod.getValue().config.authors);
+                for(Entry<String, String> entry : mod.getValue().config.additionalData.entrySet()) {
+                    player.sendMessage(ChatColor.GREEN + entry.getKey() + ": " + entry.getValue());
+                }
+                player.sendMessage(ChatColor.GOLD + "----------------");
             }
-            player.sendMessage(ChatColor.GREEN + "End of list!");
             return true;
         });
     }

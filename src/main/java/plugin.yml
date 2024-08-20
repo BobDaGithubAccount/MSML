@@ -5,3 +5,8 @@ description: A simple mod loader that allows servers to load mods that vanilla c
 author: Jephacake
 website: https://www.github.com/BobDaGithubAccount/MSML
 api-version: '1.21.1'
+commands:
+  listmods:
+    description: Lists all mods that are currently loaded.
+    usage: /listmods
+    permission: msml.listmods

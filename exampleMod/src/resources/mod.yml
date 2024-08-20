@@ -1,0 +1,8 @@
+name: ExampleMod
+version: 1.0.0
+entryPoint: org.jephacake.exampleMod
+authors:
+  - Jephacake
+additionalData:
+  website: https://www.github.com/BobDaGithubAccount/MSML
+  apiVersion: '1.21.1'

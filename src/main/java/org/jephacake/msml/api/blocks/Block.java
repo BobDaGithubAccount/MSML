@@ -1,23 +1,14 @@
 package org.jephacake.msml.api.blocks;
 
 import org.bukkit.NamespacedKey;
-import org.jephacake.msml.api.utils.Logger;
-import org.jephacake.msml.api.utils.registers.GlobalRegistry;
+import org.jephacake.msml.api.registers.GlobalRegistry;
 
-public class Block {
+public abstract class Block {
 
     public NamespacedKey id;
-    public String name;
-    public String pluginName;
 
     public Block(NamespacedKey id) {
         this.id = id;
-        this.name = id.getKey();
-        this.pluginName = id.getNamespace();
-        if ("minecraft".equals(this.pluginName)) {
-            Logger.severe("pluginName cannot be 'minecraft' since it is a reserved namespace");
-            throw new IllegalArgumentException("pluginName cannot be 'minecraft' since it is a reserved namespace");
-        }
         GlobalRegistry.registerBlock(this);
     }
 

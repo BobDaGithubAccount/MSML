@@ -1,8 +1,8 @@
 package org.jephacake.msml.api.items;
 
 import org.bukkit.NamespacedKey;
-import org.jephacake.msml.api.utils.Logger;
-import org.jephacake.msml.api.utils.registers.GlobalRegistry;
+import org.jephacake.msml.core.utils.Logger;
+import org.jephacake.msml.api.registers.GlobalRegistry;
 
 public class Item {
 

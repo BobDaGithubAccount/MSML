@@ -5,7 +5,6 @@ import java.io.InputStreamReader
 
 plugins {
     id("java")
-    id("maven-publish")
 }
 
 group = "org.jephacake.msml"
@@ -30,10 +29,47 @@ tasks.test {
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
-        vendor.set(JvmVendorSpec.AMAZON)    //TODO: Change when MC goes up to java 22 back to JvmVendorSpec.ORACLE
+        vendor.set(JvmVendorSpec.AMAZON) // TODO: Change when MC goes up to Java 22 back to JvmVendorSpec.ORACLE
         implementation.set(JvmImplementation.VENDOR_SPECIFIC)
     }
 }
+
+//val localMavenRepo = file("$buildDir/repo")
+//
+//tasks.register("createLocalMavenRepo") {
+//    doFirst {
+//        localMavenRepo.mkdirs()
+//    }
+//}
+//
+//tasks.register("publishToLocalRepo") {
+//    dependsOn("movePlugin", "createLocalMavenRepo")
+//
+//    doLast {
+//        val jar = tasks.getByName("jar").outputs.files.singleFile
+//        val groupPath = group.toString().replace('.', '/')
+//        val versionDir = File(localMavenRepo, "$groupPath/${project.name}/$version")
+//        versionDir.mkdirs()
+//
+//        // Copy the jar file
+//        jar.copyTo(File(versionDir, "${project.name}-$version.jar"), overwrite = true)
+//
+//        // Generate a minimal POM file
+//        val pomFile = File(versionDir, "${project.name}-$version.pom")
+//        pomFile.writeText("""
+//            <project xmlns="http://maven.apache.org/POM/4.0.0"
+//                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+//                     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+//                <modelVersion>4.0.0</modelVersion>
+//                <groupId>${project.group}</groupId>
+//                <artifactId>${project.name}</artifactId>
+//                <version>${project.version}</version>
+//            </project>
+//        """.trimIndent())
+//
+//        println("Published ${project.name}-$version.jar to local Maven repository at ${versionDir.absolutePath}")
+//    }
+//}
 
 layout.buildDirectory.get().asFile.mkdirs()
 val paperJar = layout.buildDirectory.file("paper-1.21.1-latest.jar").get().asFile
@@ -95,17 +131,4 @@ tasks.register("runPaperServer", Exec::class) {
     dependsOn("downloadPaper", "movePlugin")
     workingDir = layout.buildDirectory.dir("paper-server").get().asFile
     commandLine("java", "-jar", paperJar.absolutePath, "--nogui")
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-        }
-    }
-    repositories {
-        maven {
-            url = uri("${rootProject.buildDir}/repo")
-        }
-    }
 }

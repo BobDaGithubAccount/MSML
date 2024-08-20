@@ -1,6 +1,6 @@
 package org.jephacake.msml.core.loader;
 
-import org.jephacake.msml.api.utils.Logger;
+import org.jephacake.msml.core.utils.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class ModLoader {
                 try (InputStream is = jar.getInputStream(modYmlEntry)) {
                     Yaml yaml = new Yaml();
                     Map<String, Object> data = yaml.load(is);
-                    Logger.info("Loaded mod.yml from " + jarFile.getName() + ": " + data.toString());
+                    Logger.info("Loaded mod.yml from " + jarFile.getName());
 
                     String name = (String) data.get("name");
                     String version = (String) data.get("version");
@@ -44,7 +44,7 @@ public class ModLoader {
 
                     ModConfig mod = new ModConfig(name, version, entryPoint, authors, additionalData, jarFile);
                     Logger.info("Parsed mod information: " + mod.toString());
-
+                    registerMod(mod);
                 }
             }
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class ModLoader {
         }
     }
 
-    public static void loadMod(ModConfig modConfig) {
+    public static void registerMod(ModConfig modConfig) {
         Logger.info("Loading mod: " + modConfig.name);
         Mod mod = new Mod(modConfig);
         mods.put(modConfig.name, mod);

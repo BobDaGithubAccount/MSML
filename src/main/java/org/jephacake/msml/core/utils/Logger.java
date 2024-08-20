@@ -1,4 +1,4 @@
-package org.jephacake.msml.api.utils;
+package org.jephacake.msml.core.utils;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
